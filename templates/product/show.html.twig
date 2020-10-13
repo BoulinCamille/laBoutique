@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <section>
+        <article class="border border-dark rounded p-2 mt-2">
+            <div class="row">
+                <img src="{{ product.image }}" class="col-4 align-self-center">
+                <div class="pl-2 col-8 border-left">
+                    <h2>{{ product.name }}</h2>
+                    <h4>{{ product.price }} euros</h3>
+                    <p>{{ product.description }}</p>
+                    <p>{{ product.category }}</p>
+                </div>
+            </div>
+
+            {% if app.user %}
+            <div class="justify-content-end d-flex">
+                <a href="{{ path('cart_add', {'id': product.id}) }}" class="btn btn-success">
+                    <i class="fas fa-shopping-cart"></i> Ajouter
+                </a>
+            </div>
+   
+            {% endif %}
+        
+            </article>
+            <section class="border border-secondary rounded clearfix container my-4 py-4">
+            {% for notice in product.notices %}
+                <article>
+                    <h3 class="">{{ notice.author }}</h3>
+                    <p>{{ notice.content }}</p>
+                </article>
+                <hr>
+            {% endfor %}
+
+        {% if app.user %}
+        <div class="mt-5">
+            <h5>Add a review for this product</h5>
+            {{ form_start(form) }}
+            {{ form_row(form.content, {'attr': {'placeholder': 'Your review'}, 'label': ''}) }}
+            <button class="submit btn btn-primary">Comment</button>
+            {{ form_end(form) }}
+            {% else %}
+            <p class="text-center text-danger"> <a href="{{ path('security_register') }}">Create an account</a> or <a
+                    href="{{ path('security_login') }}">sign in</a> to add notice</p>
+            {% endif %}
+        </div>
+        </section>
+        
+            
+    </section>
+{% endblock %}
